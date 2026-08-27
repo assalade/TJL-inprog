@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environment Art</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;450;500&display=swap');
+
+  :root{
+    --ink: #0c0d0f;
+    --ink-2: #17181b;
+    --fog: #dcdcda;
+    --fog-dim: #86888c;
+    --spectral: #b9c4cc;
+    --rule: #232427;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--ink);
+    color: var(--fog);
+    font-family: 'Inter', sans-serif;
+    font-weight: 450;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--spectral); color: var(--ink); }
+  a{ color: var(--fog); text-decoration: none; border-bottom: 1px solid var(--fog-dim); }
+  a:hover{ color: var(--spectral); border-color: var(--spectral); }
+
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position: sticky; top:0; z-index: 10;
+    background: rgba(12,13,15,0.85);
+    backdrop-filter: blur(8px);
+  }
+  nav .wrap{ display:flex; justify-content:space-between; align-items:center; height: 72px; }
+  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1rem; }
+  .nav-links{ display:flex; gap:32px; font-size:0.9rem; }
+  .nav-links a{ color: var(--fog-dim); border-bottom: none; }
+  .nav-links a:hover{ color: var(--fog); }
+
+  /* ---------- HERO ---------- */
+  header.hero{ padding: 140px 0 100px; }
+
+  /* Un-centers just the hero text so it hugs the left edge with a
+     little padding that scales with the viewport, instead of sitting
+     in the middle of a fixed 980px column on wide screens. */
+  header.hero .wrap{
+    max-width: none;
+    margin: 0;
+    padding-left: clamp(24px, 6vw, 96px);
+    padding-right: 32px;
+  }
+  h1.title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 5.5vw, 4rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+    margin-bottom: 28px;
+  }
+  h1.title em{ font-style: normal; color: var(--fog-dim); }
+  .hero-sub{ max-width: 50ch; color: var(--fog-dim); font-size: 1.1rem; }
+
+  /* ---------- CHROMATIC ABERRATION ---------- */
+  /* Applied on hover: two tinted copies offset in opposite directions,
+     blended with screen mode so they read as a light-split rather than a filter. */
+  .aberrate{ position: relative; display: inline-block; }
+  .aberrate::before,
+  .aberrate::after{
+    content: attr(data-text);
+    position: absolute; top:0; left:0; width:100%;
+    opacity: 0;
+    mix-blend-mode: screen;
+    transition: opacity .45s ease, transform .45s ease;
+    pointer-events: none;
+  }
+  .aberrate::before{ color:#ff3b5c; }
+  .aberrate::after{ color:#3bd6ff; }
+  .aberrate:hover::before{ opacity:.75; transform: translate(-3px, 1px); }
+  .aberrate:hover::after{ opacity:.75; transform: translate(3px, -1px); }
+
+  /* Same idea, for image frames — duplicate content tinted + offset on hover.
+     Reads as almost nothing on flat placeholder color; becomes visible once
+     a real photo with edges/contrast is in the frame. */
+  .frame{ position: relative; overflow: hidden; }
+  .frame::before, .frame::after{
+    content: '';
+    position: absolute; inset: 0;
+    mix-blend-mode: screen;
+    opacity: 0;
+    transition: opacity .4s ease, transform .4s ease;
+  }
+  .frame::before{ background: rgba(255,59,92,0.22); }
+  .frame::after{ background: rgba(59,214,255,0.22); }
+  .frame:hover::before{ opacity: 1; transform: translate(-4px, 2px); }
+  .frame:hover::after{ opacity: 1; transform: translate(4px, -2px); }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: 96px 0; }
+  h2.section-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .section-note{ color: var(--fog-dim); max-width: 58ch; margin-bottom: 44px; font-size: 0.98rem; }
+
+  .grid{ display:grid; gap: 4px; }
+  .grid-2{ grid-template-columns: 1fr 1fr; }
+  .grid-3{ grid-template-columns: repeat(3, 1fr); }
+  .grid-4{ grid-template-columns: repeat(4, 1fr); }
+
+  .frame{
+    background: var(--ink-2);
+    aspect-ratio: 4/3;
+    display:flex; align-items:flex-end;
+    padding: 18px;
+  }
+  .frame img{
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .frame .cap-main{
+    position: relative; z-index: 1;
+    font-size: 0.82rem; color: var(--fog-dim);
+  }
+  .frame.has-img .cap-main{
+    color: var(--fog);
+    text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+  }
+  .frame.has-img{ cursor: pointer; }
+  .frame.wide{ aspect-ratio: 16/7; }
+  .frame.tall{ aspect-ratio: 3/4; }
+
+  .hero-image{
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    height: 78vh;
+    background: radial-gradient(ellipse at 30% 25%, #202226 0%, #0f1012 65%);
+  }
+  .hero-image .cap-main{
+    width: 100%; text-align: center; font-size: 0.85rem;
+  }
+  @media (max-width: 760px){
+    .hero-image{ height: 52vh; }
+  }
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(6,7,8,0.96);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s ease;
+  }
+  .lightbox.active{ opacity: 1; pointer-events: auto; }
+  .lb-content{
+    position: relative;
+    display: inline-flex;
+    max-width: 86vw; max-height: 80vh;
+    z-index: 3; /* sits above the nav zones */
+    pointer-events: none; /* clicks fall through to the zones beneath... */
+  }
+  .lb-img{
+    max-width: 86vw; max-height: 80vh;
+    object-fit: contain;
+    pointer-events: none; /* clicks pass through to the nav zones beneath */
+    display: block;
+  }
+  .lb-caption{
+    position: absolute; bottom: 32px; left: 0; right: 0;
+    text-align: center; color: var(--fog-dim); font-size: 0.9rem;
+    pointer-events: none; z-index: 1;
+  }
+
+  /* Full-height click zones covering the left/right side of the image,
+     not just a small arrow button. */
+  .lb-zone{
+    position: absolute; top: 0; bottom: 0; width: 50%;
+    display: flex; align-items: center;
+    background: none; border: none; cursor: pointer;
+    z-index: 2;
+  }
+  .lb-zone.prev{ left: 0; justify-content: flex-start; }
+  .lb-zone.next{ right: 0; justify-content: flex-end; }
+  .lb-arrow{
+    font-size: 2.2rem; color: var(--fog);
+    padding: 0 28px;
+    opacity: 0; transform: scale(0.85);
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .lb-zone:hover .lb-arrow{ opacity: 0.85; transform: scale(1); }
+
+  .lb-close{
+    position: absolute; top: 10px; right: 10px; z-index: 4;
+    background: rgba(6,7,8,0.55);
+    backdrop-filter: blur(4px);
+    border: none; border-radius: 50%; cursor: pointer;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; line-height: 1;
+    color: var(--fog);
+    pointer-events: auto; /* ...except this, which reclaims its own small area */
+  }
+
+  /* Continuously-animating chromatic split for the close mark. */
+  .ab-pulse{ position: relative; display: inline-block; }
+  .ab-pulse::before, .ab-pulse::after{
+    content: attr(data-text);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .ab-pulse::before{ color: #ff3b5c; animation: ab-drift-a 2.6s ease-in-out infinite; }
+  .ab-pulse::after{ color: #3bd6ff; animation: ab-drift-b 2.6s ease-in-out infinite; }
+  @keyframes ab-drift-a{
+    0%, 100%{ opacity: 0; transform: translate(0,0); }
+    50%{ opacity: .65; transform: translate(-2px, 1px); }
+  }
+  @keyframes ab-drift-b{
+    0%, 100%{ opacity: 0; transform: translate(0,0); }
+    50%{ opacity: .65; transform: translate(2px, -1px); }
+  }
+
+  @media (max-width: 600px){
+    .lb-close{ width: 36px; height: 36px; top: 6px; right: 6px; }
+    .lb-arrow{ padding: 0 14px; font-size: 1.8rem; }
+  }
+
+  .secondary-label{ font-size: 0.85rem; color: var(--fog-dim); margin-bottom: 8px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 96px 0 120px; border-top: 1px solid var(--rule); }
+  .contact-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 48px; }
+  footer h2{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size: 1.5rem; margin-bottom: 16px; }
+  footer p{ color: var(--fog-dim); max-width: 46ch; margin-bottom: 12px; }
+  .meta-list div{ display:flex; justify-content:space-between; border-bottom: 1px solid var(--rule); padding: 12px 0; font-size: 0.92rem; }
+  .meta-list span:first-child{ color: var(--fog-dim); }
+
+  @media (max-width: 760px){
+    .grid-2, .grid-3, .grid-4{ grid-template-columns: 1fr 1fr; }
+    .contact-grid{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px){
+    .grid-2, .grid-3, .grid-4{ grid-template-columns: 1fr; }
+    .nav-links{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-name">Your Name</div>
+    <div class="nav-links">
+      <a href="#environments">Interiors</a>
+      <a href="#dimensional">Blender</a>
+      <a href="#assets">Objects</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1 class="title aberrate" data-text="What remains when the light gives up on something.">What remains when the light gives up on something.</h1>
+    <p class="hero-sub">
+      Isometric rooms, objects, and buildings, held together by where the light is allowed
+      to fall and where it isn't. Painted, then some of it built out in three dimensions.
+    </p>
+    <!-- To replace: search for "HERO-IMAGE.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame hero-image" data-img="images/Livingroom_tjl.jpg"><img src="images/Livingroom_tjl.jpg" alt="Hero environment"><div class="cap-main">Living room, isometric</div></div>
+  </div>
+</header>
+
+<section id="environments">
+  <div class="wrap">
+    <h2 class="section-title">Interiors</h2>
+    <p class="section-note">Full-room paintings, isometric.</p>
+    <div class="grid grid-2">
+      <div class="frame" data-img="images/Livingroom_tjl.jpg"><img src="images/Livingroom_tjl.jpg" alt="Living room"><div class="cap-main">Living room</div></div>
+      <!-- To replace: search for "STUDY.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" data-img="images/STUDY.jpg"><img src="images/STUDY.jpg" alt="Study"><div class="cap-main">Study</div></div>
+      <!-- To replace: search for "KITCHEN.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" data-img="images/KITCHEN.jpg"><img src="images/KITCHEN.jpg" alt="Kitchen"><div class="cap-main">Kitchen</div></div>
+      <!-- To replace: search for "BEDROOM.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" data-img="images/BEDROOM.jpg"><img src="images/BEDROOM.jpg" alt="Bedroom"><div class="cap-main">Bedroom</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="dimensional">
+  <div class="wrap">
+    <h2 class="section-title">Blender</h2>
+    <p class="section-note">Rooms built out in three dimensions.</p>
+    <div class="grid grid-3">
+      <!-- To replace: search for "BEDROOM-3D.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/BEDROOM-3D.jpg"><img src="images/BEDROOM-3D.jpg" alt="Bedroom top-down"><div class="cap-main">Bedroom, top-down</div></div>
+      <!-- To replace: search for "STUDY-3D.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/STUDY-3D.jpg"><img src="images/STUDY-3D.jpg" alt="Study top-down"><div class="cap-main">Study, top-down</div></div>
+      <!-- To replace: search for "FLOOR-PLAN.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/FLOOR-PLAN.jpg"><img src="images/FLOOR-PLAN.jpg" alt="Full floor plan"><div class="cap-main">Full floor plan</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="assets">
+  <div class="wrap">
+    <h2 class="section-title">Objects</h2>
+    <p class="section-note">Small, recurring things.</p>
+    <div class="grid grid-4">
+      <!-- To replace: search for "LANTERNS.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/LANTERNS.jpg"><img src="images/LANTERNS.jpg" alt="Lanterns"><div class="cap-main">Lanterns</div></div>
+      <!-- To replace: search for "KEYS.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/KEYS.jpg"><img src="images/KEYS.jpg" alt="Keys"><div class="cap-main">Keys</div></div>
+      <!-- To replace: search for "BOOKS.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/BOOKS.jpg"><img src="images/BOOKS.jpg" alt="Books"><div class="cap-main">Books</div></div>
+      <!-- To replace: search for "FURNITURE.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/FURNITURE.jpg"><img src="images/FURNITURE.jpg" alt="Furniture"><div class="cap-main">Furniture</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <h2 class="section-title">Architecture</h2>
+    <p class="section-note">Street-level facades.</p>
+    <div class="grid grid-3">
+      <!-- To replace: search for "STREET-BLOCK.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/STREET-BLOCK.jpg"><img src="images/STREET-BLOCK.jpg" alt="Street block"><div class="cap-main">Street block</div></div>
+      <!-- To replace: search for "TOWNHOUSE.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/TOWNHOUSE.jpg"><img src="images/TOWNHOUSE.jpg" alt="Townhouse"><div class="cap-main">Townhouse</div></div>
+      <!-- To replace: search for "NIGHT-EXTERIOR.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame tall" data-img="images/NIGHT-EXTERIOR.jpg"><img src="images/NIGHT-EXTERIOR.jpg" alt="Night exterior"><div class="cap-main">Night exterior</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="range">
+  <div class="wrap">
+    <div class="secondary-label">Also</div>
+    <h2 class="section-title" style="font-size:1.2rem;">Character Work</h2>
+    <div class="grid grid-3" style="margin-top:24px;">
+      <!-- To replace: search for "TURNAROUND.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" style="aspect-ratio:3/4;" data-img="images/TURNAROUND.jpg"><img src="images/TURNAROUND.jpg" alt="Character turnaround"><div class="cap-main">Turnaround</div></div>
+      <!-- To replace: search for "CHARACTER-SHEET.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" style="aspect-ratio:3/4;" data-img="images/CHARACTER-SHEET.jpg"><img src="images/CHARACTER-SHEET.jpg" alt="Character sheet"><div class="cap-main">Character sheet</div></div>
+      <!-- To replace: search for "EXPRESSIONS.jpg" (2 places on this line) and swap both for your real filename, e.g. living-room-01.jpg -->
+      <div class="frame" style="aspect-ratio:3/4;" data-img="images/EXPRESSIONS.jpg"><img src="images/EXPRESSIONS.jpg" alt="Expression sheet"><div class="cap-main">Expressions</div></div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-grid">
+      <div>
+        <h2>Contact</h2>
+        <p>A short paragraph about who you are and what you make.</p>
+        <p><a href="mailto:you@example.com">you@example.com</a></p>
+      </div>
+      <div class="meta-list">
+        <div><span>Based in</span><span>—</span></div>
+        <div><span>Software</span><span>Clip Studio Paint, Blender</span></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-zone prev" id="lbPrev" aria-label="Previous image">
+    <span class="lb-arrow">&#8249;</span>
+  </button>
+  <div class="lb-content">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <button class="lb-close ab-pulse" id="lbClose" aria-label="Close" data-text="&#215;">&#215;</button>
+  </div>
+  <button class="lb-zone next" id="lbNext" aria-label="Next image">
+    <span class="lb-arrow">&#8250;</span>
+  </button>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<script>
+  // Give any .frame a data-img="path/to/image.jpg" and it becomes clickable.
+  // data-img also accepts a comma-separated list — e.g.
+  // data-img="images/a.jpg, images/b.jpg, images/c.jpg" — to represent a
+  // "stack": the grid still shows one thumbnail (whatever <img src> is set
+  // to), but opening it lets you page through every image in that stack
+  // before moving on to the next thumbnail's images.
+  (function(){
+    const frameEls = Array.from(document.querySelectorAll('.frame[data-img]'))
+      .filter(f => f.getAttribute('data-img').trim() !== '');
+
+    // Flatten every frame's image(s) into one ordered list of slides.
+    let slides = [];
+    frameEls.forEach(frame => {
+      const imgs = frame.getAttribute('data-img').split(',').map(s => s.trim()).filter(Boolean);
+      if (!imgs.length) return;
+      frame.classList.add('has-img');
+      const cap = frame.querySelector('.cap-main');
+      const captionText = cap ? cap.textContent : '';
+      imgs.forEach((src, i) => {
+        slides.push({ src, caption: captionText, frame, indexInStack: i, stackSize: imgs.length });
+      });
+    });
+
+    const overlay = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    let current = 0;
+
+    function open(i){
+      current = (i + slides.length) % slides.length;
+      const slide = slides[current];
+      lbImg.src = slide.src;
+      lbCaption.textContent = slide.stackSize > 1
+        ? `${slide.caption} — ${slide.indexInStack + 1}/${slide.stackSize}`
+        : slide.caption;
+      overlay.classList.add('active');
+    }
+    function close(){ overlay.classList.remove('active'); }
+
+    frameEls.forEach((frame) => {
+      frame.addEventListener('click', () => {
+        const firstIndex = slides.findIndex(s => s.frame === frame);
+        if (firstIndex !== -1) open(firstIndex);
+      });
+    });
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', () => open(current - 1));
+    document.getElementById('lbNext').addEventListener('click', () => open(current + 1));
+
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('active')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') open(current - 1);
+      if (e.key === 'ArrowRight') open(current + 1);
+    });
+  })();
+</script>
+
+</body>
+</html>
