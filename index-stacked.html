@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environment Art</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;450;500&display=swap');
+
+  :root{
+    --ink: #0c0d0f; --ink-2: #17181b; --fog: #dcdcda; --fog-dim: #86888c;
+    --spectral: #b9c4cc; --rule: #232427;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--ink); color: var(--fog);
+    font-family: 'Inter', sans-serif; font-weight: 450; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  ::selection{ background: var(--spectral); color: var(--ink); }
+  a{ color: var(--fog); text-decoration: none; border-bottom: 1px solid var(--fog-dim); }
+  a:hover{ color: var(--spectral); border-color: var(--spectral); }
+  .wrap{ max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- NAV ---------- */
+  nav{ position: sticky; top:0; z-index: 10; background: rgba(12,13,15,0.85); backdrop-filter: blur(8px); }
+  nav .wrap{ display:flex; justify-content:space-between; align-items:center; height: 68px; }
+  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1rem; }
+  .nav-links{ display:flex; gap:28px; font-size:0.88rem; }
+  .nav-links a{ color: var(--fog-dim); border-bottom: none; }
+  .nav-links a:hover{ color: var(--fog); }
+
+  /* ---------- INTRO ---------- */
+  /* ---------- HERO ---------- */
+  h1.title{
+    font-family:'Space Grotesk', sans-serif; font-weight: 500;
+    font-size: clamp(2.2rem, 4.8vw, 3.4rem); line-height: 1.12; letter-spacing: -0.01em;
+    max-width: 17ch; margin-bottom: 18px;
+  }
+  .hero-sub{ max-width: 50ch; color: var(--fog-dim); font-size: 1.02rem; }
+
+  .aberrate{ position: relative; display: inline-block; }
+  .aberrate::before, .aberrate::after{
+    content: attr(data-text); position: absolute; top:0; left:0; width:100%;
+    opacity: 0; mix-blend-mode: screen; transition: opacity .45s ease, transform .45s ease; pointer-events: none;
+  }
+  .aberrate::before{ color:#ff3b5c; } .aberrate::after{ color:#3bd6ff; }
+  .aberrate:hover::before{ opacity:.75; transform: translate(-3px, 1px); }
+  .aberrate:hover::after{ opacity:.75; transform: translate(3px, -1px); }
+
+  header.hero{ padding: 0; }
+  .hero-image{
+    width: 100vw; position: relative; left: 50%; margin-left: -50vw;
+    height: 78vh; min-height: 440px; background: #0f1012;
+  }
+  .hero-image img{ position:absolute; inset:0; z-index:0; width:100%; height:100%; object-fit:cover; }
+  .hero-overlay{
+    position:absolute; inset:0; z-index:1;
+    background: linear-gradient(0deg, rgba(12,13,15,0.94) 0%, rgba(12,13,15,0.35) 45%, rgba(12,13,15,0.05) 75%);
+  }
+  .hero-text{ position:absolute; left:0; right:0; bottom:0; z-index:2; padding-bottom: clamp(36px, 6vh, 64px); }
+  .hero-text .title{ color:#eceae4; }
+  .hero-text .hero-sub{ color:#c7c9cb; }
+  @media (max-width: 760px){ .hero-image{ height: 58vh; min-height: 340px; } }
+
+  .intro{ padding: 56px 0; max-width: 62ch; }
+  .intro p{ color: var(--fog-dim); font-size: 1.05rem; }
+  .intro strong{ color: var(--fog); font-weight: 500; }
+
+  /* ---------- PROJECT BLOCKS ---------- */
+  .piece{
+    display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px;
+    align-items: start; padding: 56px 0; border-top: 1px solid var(--rule);
+  }
+  .piece.reverse .piece-media-group{ order: 2; }
+  .piece.reverse .piece-text{ order: 1; text-align: right; }
+  .piece.reverse .piece-text .piece-meta{ justify-content: flex-end; }
+
+  /* All images for a project are visible at once — a large primary shot
+     plus a row of smaller supporting shots underneath. Nothing is hidden
+     behind a click; clicking any image just opens it full-size. */
+  .piece-media-group{ display: flex; flex-direction: column; gap: 8px; }
+  .secondary-row{ display: flex; gap: 8px; }
+
+  .frame{
+    position: relative; overflow: hidden; background: var(--ink-2); cursor: pointer;
+  }
+  .media-primary{ aspect-ratio: 4/3; }
+  .media-secondary{ flex: 1; aspect-ratio: 4/3; }
+  .frame img, .frame video{
+    position: absolute; inset:0; width:100%; height:100%; object-fit: cover;
+    transition: transform .5s ease;
+  }
+  .frame:hover img, .frame:hover video{ transform: scale(1.06); }
+
+  .piece-text{ padding-top: 4px; }
+  .piece-text h2{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 500;
+    font-size: 1.3rem; margin-bottom: 10px;
+  }
+  .piece-text p{ color: var(--fog-dim); font-size: 0.95rem; margin-bottom: 10px; }
+  .piece-meta{ display: flex; gap: 10px; font-size: 0.78rem; color: var(--fog-dim); flex-wrap: wrap; }
+  .piece-meta span{ padding: 3px 9px; border: 1px solid var(--rule); border-radius: 20px; }
+
+  /* ---------- GRID SECTION (props / character work) ---------- */
+  .grid-section{ padding: 72px 0; }
+  .grid-section .section-label{ font-size: 0.85rem; color: var(--fog-dim); margin-bottom: 28px; }
+  .grid{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .grid .frame{ aspect-ratio: 1/1; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ padding: 72px 0 100px; border-top: 1px solid var(--rule); }
+  footer h2{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1.3rem; margin-bottom:14px; }
+  footer p{ color: var(--fog-dim); max-width: 46ch; margin-bottom: 10px; }
+
+  @media (max-width: 760px){
+    .piece{ grid-template-columns: 1fr; gap: 20px; }
+    .piece.reverse .piece-media-group, .piece.reverse .piece-text{ order: unset; }
+    .piece.reverse .piece-text{ text-align: left; }
+    .piece.reverse .piece-text .piece-meta{ justify-content: flex-start; }
+    .grid{ grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position: fixed; inset: 0; z-index: 200; background: rgba(6,7,8,0.96);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition: opacity .3s ease;
+  }
+  .lightbox.active{ opacity:1; pointer-events:auto; }
+  .lb-content{ position:relative; display:inline-flex; max-width:86vw; max-height:80vh; z-index:3; pointer-events:none; }
+  .lb-img{ max-width:86vw; max-height:80vh; object-fit:contain; pointer-events:none; display:block; }
+  .lb-caption{ position:absolute; bottom:32px; left:0; right:0; text-align:center; color:var(--fog-dim); font-size:0.9rem; pointer-events:none; z-index:1; }
+  .lb-zone{ position:absolute; top:0; bottom:0; width:50%; display:flex; align-items:center; background:none; border:none; cursor:pointer; z-index:2; }
+  .lb-zone.prev{ left:0; justify-content:flex-start; } .lb-zone.next{ right:0; justify-content:flex-end; }
+  .lb-arrow{ font-size:2.2rem; color:var(--fog); padding:0 28px; opacity:0; transform:scale(.85); transition:opacity .2s ease, transform .2s ease; }
+  .lb-zone:hover .lb-arrow{ opacity:.85; transform:scale(1); }
+  .lb-close{ position:absolute; top:10px; right:10px; z-index:4; background:rgba(6,7,8,0.55); backdrop-filter:blur(4px); border:none; border-radius:50%; cursor:pointer; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:var(--fog); pointer-events:auto; }
+  .ab-pulse{ position:relative; display:inline-block; }
+  .ab-pulse::before, .ab-pulse::after{ content:attr(data-text); position:absolute; inset:0; display:flex; align-items:center; justify-content:center; mix-blend-mode:screen; pointer-events:none; }
+  .ab-pulse::before{ color:#ff3b5c; animation: ab-a 2.6s ease-in-out infinite; }
+  .ab-pulse::after{ color:#3bd6ff; animation: ab-b 2.6s ease-in-out infinite; }
+  @keyframes ab-a{ 0%,100%{opacity:0; transform:translate(0,0);} 50%{opacity:.65; transform:translate(-2px,1px);} }
+  @keyframes ab-b{ 0%,100%{opacity:0; transform:translate(0,0);} 50%{opacity:.65; transform:translate(2px,-1px);} }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="nav-name">Your Name</div>
+    <div class="nav-links">
+      <a href="#environments">Environments</a>
+      <a href="#more">More Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="frame hero-image" data-img="images/Hero_Living.jpg">
+    <img src="images/Hero_Living.jpg" alt="Hero environment">
+    <div class="hero-overlay"></div>
+    <div class="hero-text wrap">
+      <h1 class="title aberrate" data-text="What remains when the light gives up on something.">What remains when the light gives up on something.</h1>
+      <p class="hero-sub">
+        Isometric rooms, objects, and buildings, held together by where the light is allowed
+        to fall and where it isn't. Painted, then some of it built out in three dimensions.
+      </p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="intro">
+    <p><strong>Environment artist and illustrator</strong> working across comics and games. The pieces below are from an original graphic novel currently in production.</p>
+  </div>
+</div>
+
+<div class="wrap" id="environments">
+
+  <div class="piece">
+    <div class="piece-media-group">
+      <div class="frame media-primary" data-img="images/Livingroom_tjl.jpg"><img src="images/Livingroom_tjl.jpg" alt="Living room"></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/walls_livingroom.png"><img src="images/walls_livingroom.png" alt="Living room, wall study"></div>
+        <div class="frame media-secondary" data-img="images/Hero_Living.jpg"><img src="images/Hero_Living.jpg" alt="Living room, wide shot"></div>
+      </div>
+    </div>
+    <div class="piece-text">
+      <h2>Living Room</h2>
+      <p>Full isometric interior, painted. Fireplace and window light doing most of the work — this is the piece the rest of the portfolio's mood is built around.</p>
+      <div class="piece-meta"><span>Painted</span><span>Clip Studio Paint</span><span>ALTR</span></div>
+    </div>
+  </div>
+
+  <div class="piece reverse">
+    <div class="piece-media-group">
+      <div class="frame media-primary" data-img="images/house.mp4"><video src="images/house.mp4" muted loop autoplay playsinline></video></div>
+    </div>
+    <div class="piece-text">
+      <h2>Dockside House</h2>
+      <p>Built and lit in Blender — warm window light against a cool dusk exterior, weathered wood and dock clutter for wear.</p>
+      <div class="piece-meta"><span>Blender</span><span>Environment</span></div>
+    </div>
+  </div>
+
+  <div class="piece">
+    <div class="piece-media-group">
+      <div class="frame media-primary" data-img="images/Ignacio_apt_3d.jpg"><img src="images/Ignacio_apt_3d.jpg" alt="Ignacio's apartment, 3D"></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/kitchen_ignacio_drawing.png"><img src="images/kitchen_ignacio_drawing.png" alt="Kitchen concept drawing"></div>
+        <div class="frame media-secondary" data-img="images/hotel_lobby.png"><img src="images/hotel_lobby.png" alt="Hotel lobby"></div>
+      </div>
+    </div>
+    <div class="piece-text">
+      <h2>Ignacio's Apartment</h2>
+      <p>Concept drawing carried into a full 3D build — kitchen line art alongside the finished Blender render of the same space.</p>
+      <div class="piece-meta"><span>Blender</span><span>Concept → 3D</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="wrap grid-section" id="more">
+  <div class="section-label">Props, character work, and process</div>
+  <div class="grid">
+    <div class="frame" data-img="images/lantern_full.png"><img src="images/lantern_full.png" alt="Lantern"></div>
+    <div class="frame" data-img="images/Key_full.png"><img src="images/Key_full.png" alt="Keys"></div>
+    <div class="frame" data-img="images/head.mp4"><video src="images/head.mp4" muted loop autoplay playsinline></video></div>
+    <div class="frame" data-img="images/zoe_characterbreakdown.jpg"><img src="images/zoe_characterbreakdown.jpg" alt="Zoe, character breakdown"></div>
+    <div class="frame" data-img="images/BARANCA_EXPRESSIONS.png"><img src="images/BARANCA_EXPRESSIONS.png" alt="Baranca, expressions"></div>
+    <div class="frame" data-img="images/KARA_EXPRESSIONS.png"><img src="images/KARA_EXPRESSIONS.png" alt="Kara, expressions"></div>
+    <div class="frame" data-img="images/diary_elisa_mm.jpg"><img src="images/diary_elisa_mm.jpg" alt="Elisa's diary"></div>
+    <div class="frame" data-img="images/elisasdiary_sketches_02.jpg"><img src="images/elisasdiary_sketches_02.jpg" alt="Diary, sketches"></div>
+    <div class="frame" data-img="images/diary_initialsketches.jpg"><img src="images/diary_initialsketches.jpg" alt="Diary, initial sketches"></div>
+    <div class="frame" data-img="images/brothel_theatercombo_prelim.jpg"><img src="images/brothel_theatercombo_prelim.jpg" alt="Theater/brothel, prelim"></div>
+  </div>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p>A short paragraph about who you are and what you make.</p>
+    <p><a href="mailto:you@example.com">you@example.com</a></p>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-zone prev" id="lbPrev" aria-label="Previous image"><span class="lb-arrow">&#8249;</span></button>
+  <div class="lb-content">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <video class="lb-img" id="lbVideo" controls autoplay loop playsinline style="display:none;"></video>
+    <button class="lb-close ab-pulse" id="lbClose" aria-label="Close" data-text="&#215;">&#215;</button>
+  </div>
+  <button class="lb-zone next" id="lbNext" aria-label="Next image"><span class="lb-arrow">&#8250;</span></button>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<script>
+  // Every .frame with a data-img is clickable — opens full-size in the
+  // lightbox. Left/right (or arrow keys) move through every image on the
+  // page, in the order it appears, regardless of which project it's from.
+  (function(){
+    const frameEls = Array.from(document.querySelectorAll('.frame[data-img]'))
+      .filter(f => f.getAttribute('data-img').trim() !== '');
+
+    const slides = frameEls.map(frame => {
+      const caption = frame.closest('.piece')
+        ? frame.closest('.piece').querySelector('h2')?.textContent
+        : (frame.querySelector('img,video')?.alt || '');
+      return { src: frame.getAttribute('data-img').trim(), caption: caption || '', frame };
+    });
+
+    const overlay = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbVideo = document.getElementById('lbVideo');
+    const lbCaption = document.getElementById('lbCaption');
+    let current = 0;
+
+    function isVideo(src){ return /\.(mp4|webm|mov)$/i.test(src); }
+
+    function open(i){
+      current = (i + slides.length) % slides.length;
+      const slide = slides[current];
+      lbVideo.pause(); lbVideo.removeAttribute('src');
+      if (isVideo(slide.src)){
+        lbImg.style.display='none'; lbVideo.style.display='block';
+        lbVideo.src = slide.src; lbVideo.load(); lbVideo.play();
+      } else {
+        lbVideo.style.display='none'; lbImg.style.display='block';
+        lbImg.src = slide.src;
+      }
+      lbCaption.textContent = slide.caption;
+      overlay.classList.add('active');
+    }
+    function close(){ lbVideo.pause(); overlay.classList.remove('active'); }
+
+    frameEls.forEach((frame, i) => frame.addEventListener('click', () => open(i)));
+    document.getElementById('lbClose').addEventListener('click', close);
+    document.getElementById('lbPrev').addEventListener('click', () => open(current-1));
+    document.getElementById('lbNext').addEventListener('click', () => open(current+1));
+    document.addEventListener('keydown', (e) => {
+      if (!overlay.classList.contains('active')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') open(current-1);
+      if (e.key === 'ArrowRight') open(current+1);
+    });
+  })();
+</script>
+
+</body>
+</html>
