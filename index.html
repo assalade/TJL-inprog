@@ -73,8 +73,16 @@
     display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px;
     align-items: start; padding: 56px 0; border-top: 1px solid var(--rule);
   }
-  .piece.reverse .piece-media-group{ order: 2; }
-  .piece.reverse .piece-text{ order: 1; text-align: right; }
+  .piece-media-group{ grid-column: 1; }
+  .piece-text{ grid-column: 2; }
+
+  /* Reversed rows: swap which column is wide, instead of using `order`
+     (order changes visual position AND can shift which grid track an item
+     lands in — that's what was making the images shrink). This way the
+     image always gets the big column regardless of which side it's on. */
+  .piece.reverse{ grid-template-columns: 1fr 1.5fr; }
+  .piece.reverse .piece-media-group{ grid-column: 2; }
+  .piece.reverse .piece-text{ grid-column: 1; text-align: right; }
   .piece.reverse .piece-text .piece-meta{ justify-content: flex-end; }
 
   /* All images for a project are visible at once — a large primary shot
@@ -116,7 +124,9 @@
 
   @media (max-width: 760px){
     .piece{ grid-template-columns: 1fr; gap: 20px; }
-    .piece.reverse .piece-media-group, .piece.reverse .piece-text{ order: unset; }
+    .piece.reverse{ grid-template-columns: 1fr; }
+    .piece-media-group, .piece.reverse .piece-media-group{ grid-column: 1; }
+    .piece-text, .piece.reverse .piece-text{ grid-column: 1; }
     .piece.reverse .piece-text{ text-align: left; }
     .piece.reverse .piece-text .piece-meta{ justify-content: flex-start; }
     .grid{ grid-template-columns: repeat(3, 1fr); }
