@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Environment Art</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;450;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@200;400;450;500&display=swap');
 
   :root{
     --ink: #0c0d0f; --ink-2: #17181b; --fog: #dcdcda; --fog-dim: #86888c;
@@ -136,7 +136,15 @@
   .lb-zone.prev{ left:0; justify-content:flex-start; } .lb-zone.next{ right:0; justify-content:flex-end; }
   .lb-arrow{ font-size:2.2rem; color:var(--fog); padding:0 28px; opacity:0; transform:scale(.85); transition:opacity .2s ease, transform .2s ease; }
   .lb-zone:hover .lb-arrow{ opacity:.85; transform:scale(1); }
-  .lb-close{ position:absolute; top:10px; right:10px; z-index:4; background:rgba(6,7,8,0.55); backdrop-filter:blur(4px); border:none; border-radius:50%; cursor:pointer; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:1.3rem; color:var(--fog); pointer-events:auto; }
+  .lb-close{
+    position: absolute; top: 24px; right: 32px; z-index: 5;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 200;
+    font-size: 2.8rem; line-height: 1; color: #ffffff;
+    padding: 8px; pointer-events: auto;
+    transition: transform .4s ease;
+  }
+  .lb-close:hover{ transform: rotate(90deg); }
   .ab-pulse{ position:relative; display:inline-block; }
   .ab-pulse::before, .ab-pulse::after{ content:attr(data-text); position:absolute; inset:0; display:flex; align-items:center; justify-content:center; mix-blend-mode:screen; pointer-events:none; }
   .ab-pulse::before{ color:#ff3b5c; animation: ab-a 2.6s ease-in-out infinite; }
@@ -182,9 +190,9 @@
 
   <div class="piece">
     <div class="piece-media-group">
-      <div class="frame media-primary" data-img="images/Livingroom_tjl.jpg"><img src="images/Livingroom_tjl.jpg" alt="Living room"></div>
+      <div class="frame media-primary" data-img="images/Livingroom_tjl.jpg"><img loading="lazy" src="images/Livingroom_tjl.jpg" alt="Living room"></div>
       <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/walls_livingroom.png"><img src="images/walls_livingroom.png" alt="Living room, wall study"></div>
+        <div class="frame media-secondary" data-img="images/walls_livingroom.png"><img loading="lazy" src="images/walls_livingroom.png" alt="Living room, wall study"></div>
         <div class="frame media-secondary" data-img="images/Hero_Living.jpg"><img src="images/Hero_Living.jpg" alt="Living room, wide shot"></div>
       </div>
     </div>
@@ -208,10 +216,10 @@
 
   <div class="piece">
     <div class="piece-media-group">
-      <div class="frame media-primary" data-img="images/Ignacio_apt_3d.jpg"><img src="images/Ignacio_apt_3d.jpg" alt="Ignacio's apartment, 3D"></div>
+      <div class="frame media-primary" data-img="images/Ignacio_apt_3d.jpg"><img loading="lazy" src="images/Ignacio_apt_3d.jpg" alt="Ignacio's apartment, 3D"></div>
       <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/kitchen_ignacio_drawing.png"><img src="images/kitchen_ignacio_drawing.png" alt="Kitchen concept drawing"></div>
-        <div class="frame media-secondary" data-img="images/hotel_lobby.png"><img src="images/hotel_lobby.png" alt="Hotel lobby"></div>
+        <div class="frame media-secondary" data-img="images/kitchen_ignacio_drawing.png"><img loading="lazy" src="images/kitchen_ignacio_drawing.png" alt="Kitchen concept drawing"></div>
+        <div class="frame media-secondary" data-img="images/hotel_lobby.png"><img loading="lazy" src="images/hotel_lobby.png" alt="Hotel lobby"></div>
       </div>
     </div>
     <div class="piece-text">
@@ -223,10 +231,10 @@
 
   <div class="piece reverse">
     <div class="piece-media-group">
-      <div class="frame media-primary" data-img="images/diary_elisa_mm.jpg"><img src="images/diary_elisa_mm.jpg" alt="Elisa's diary"></div>
+      <div class="frame media-primary" data-img="images/diary_elisa_mm.jpg"><img loading="lazy" src="images/diary_elisa_mm.jpg" alt="Elisa's diary"></div>
       <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/diary_initialsketches.jpg"><img src="images/diary_initialsketches.jpg" alt="Diary, initial sketches"></div>
-        <div class="frame media-secondary" data-img="images/elisasdiary_sketches_02.jpg"><img src="images/elisasdiary_sketches_02.jpg" alt="Diary, sketch refinement"></div>
+        <div class="frame media-secondary" data-img="images/diary_initialsketches.jpg"><img loading="lazy" src="images/diary_initialsketches.jpg" alt="Diary, initial sketches"></div>
+        <div class="frame media-secondary" data-img="images/elisasdiary_sketches_02.jpg"><img loading="lazy" src="images/elisasdiary_sketches_02.jpg" alt="Diary, sketch refinement"></div>
       </div>
     </div>
     <div class="piece-text">
@@ -241,13 +249,13 @@
 <div class="wrap grid-section" id="more">
   <div class="section-label">Props, character work, and process</div>
   <div class="grid">
-    <div class="frame" data-img="images/lantern_full.png"><img src="images/lantern_full.png" alt="Lantern"></div>
-    <div class="frame" data-img="images/Key_full.png"><img src="images/Key_full.png" alt="Keys"></div>
+    <div class="frame" data-img="images/lantern_full.png"><img loading="lazy" src="images/lantern_full.png" alt="Lantern"></div>
+    <div class="frame" data-img="images/Key_full.png"><img loading="lazy" src="images/Key_full.png" alt="Keys"></div>
     <div class="frame" data-img="images/head.mp4"><video src="images/head.mp4" muted loop autoplay playsinline></video></div>
-    <div class="frame" data-img="images/zoe_characterbreakdown.jpg"><img src="images/zoe_characterbreakdown.jpg" alt="Zoe, character breakdown"></div>
-    <div class="frame" data-img="images/BARANCA_EXPRESSIONS.png"><img src="images/BARANCA_EXPRESSIONS.png" alt="Baranca, expressions"></div>
-    <div class="frame" data-img="images/KARA_EXPRESSIONS.png"><img src="images/KARA_EXPRESSIONS.png" alt="Kara, expressions"></div>
-    <div class="frame" data-img="images/brothel_theatercombo_prelim.jpg"><img src="images/brothel_theatercombo_prelim.jpg" alt="Theater/brothel, prelim"></div>
+    <div class="frame" data-img="images/zoe_characterbreakdown.jpg"><img loading="lazy" src="images/zoe_characterbreakdown.jpg" alt="Zoe, character breakdown"></div>
+    <div class="frame" data-img="images/BARANCA_EXPRESSIONS.png"><img loading="lazy" src="images/BARANCA_EXPRESSIONS.png" alt="Baranca, expressions"></div>
+    <div class="frame" data-img="images/KARA_EXPRESSIONS.png"><img loading="lazy" src="images/KARA_EXPRESSIONS.png" alt="Kara, expressions"></div>
+    <div class="frame" data-img="images/brothel_theatercombo_prelim.jpg"><img loading="lazy" src="images/brothel_theatercombo_prelim.jpg" alt="Theater/brothel, prelim"></div>
   </div>
 </div>
 
@@ -260,11 +268,11 @@
 </footer>
 
 <div class="lightbox" id="lightbox">
+  <button class="lb-close ab-pulse" id="lbClose" aria-label="Close" data-text="&#215;">&#215;</button>
   <button class="lb-zone prev" id="lbPrev" aria-label="Previous image"><span class="lb-arrow">&#8249;</span></button>
   <div class="lb-content">
-    <img class="lb-img" id="lbImg" src="" alt="">
+    <img loading="lazy" class="lb-img" id="lbImg" src="" alt="">
     <video class="lb-img" id="lbVideo" controls autoplay loop playsinline style="display:none;"></video>
-    <button class="lb-close ab-pulse" id="lbClose" aria-label="Close" data-text="&#215;">&#215;</button>
   </div>
   <button class="lb-zone next" id="lbNext" aria-label="Next image"><span class="lb-arrow">&#8250;</span></button>
   <div class="lb-caption" id="lbCaption"></div>
