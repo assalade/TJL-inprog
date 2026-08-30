@@ -71,10 +71,10 @@
   /* ---------- PROJECT BLOCKS ---------- */
   .piece{
     display: grid; grid-template-columns: 1.5fr 1fr; gap: 48px;
-    align-items: start; padding: 56px 0; border-top: 1px solid var(--rule);
+    align-items: stretch; padding: 56px 0; border-top: 1px solid var(--rule);
   }
-  .piece-media-group{ grid-column: 1; }
-  .piece-text{ grid-column: 2; }
+  .piece-media-group{ grid-column: 1; grid-row: 1; }
+  .piece-text{ grid-column: 2; grid-row: 1; }
 
   /* Reversed rows: swap which column is wide, instead of using `order`
      (order changes visual position AND can shift which grid track an item
@@ -102,7 +102,7 @@
   }
   .frame:hover img, .frame:hover video{ transform: scale(1.06); }
 
-  .piece-text{ padding-top: 4px; }
+  .piece-text{ padding-top: 4px; display: flex; flex-direction: column; }
   .piece-text h2{
     font-family: 'Space Grotesk', sans-serif; font-weight: 500;
     font-size: 1.3rem; margin-bottom: 10px;
@@ -110,6 +110,7 @@
   .piece-text p{ color: var(--fog-dim); font-size: 0.95rem; margin-bottom: 10px; }
   .piece-meta{ display: flex; gap: 10px; font-size: 0.78rem; color: var(--fog-dim); flex-wrap: wrap; }
   .piece-meta span{ padding: 3px 9px; border: 1px solid var(--rule); border-radius: 20px; }
+  .piece-text .secondary-row{ margin-top: auto; padding-top: 16px; }
 
   /* ---------- GRID SECTION (props / character work) ---------- */
   .grid-section{ padding: 72px 0; }
@@ -202,60 +203,60 @@
   <div class="piece">
     <div class="piece-media-group">
       <div class="frame media-primary" data-img="images/Livingroom_tjl.jpg"><img loading="lazy" src="images/Livingroom_tjl.jpg" alt="Living room"></div>
-      <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/walls_livingroom.png"><img loading="lazy" src="images/walls_livingroom.png" alt="Living room, wall study"></div>
-        <div class="frame media-secondary" data-img="images/Hero_Living.jpg"><img src="images/Hero_Living.jpg" alt="Living room, wide shot"></div>
-      </div>
     </div>
     <div class="piece-text">
       <h2>Living Room</h2>
       <p>Full isometric interior, painted. Fireplace and window light doing most of the work — this is the piece the rest of the portfolio's mood is built around.</p>
       <div class="piece-meta"><span>Painted</span><span>Clip Studio Paint</span><span>ALTR</span></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/walls_livingroom.png"><img loading="lazy" src="images/walls_livingroom.png" alt="Living room, wall study"></div>
+        <div class="frame media-secondary" data-img="images/Hero_Living.jpg"><img src="images/Hero_Living.jpg" alt="Living room, wide shot"></div>
+      </div>
     </div>
   </div>
 
   <div class="piece reverse">
     <div class="piece-media-group">
       <div class="frame media-primary" data-img="images/house.mp4"><video src="images/house.mp4" muted loop autoplay playsinline></video></div>
-      <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/house-prelim-1.jpg"><img loading="lazy" src="images/house-prelim-1.jpg" alt="Dockside house, preliminary sketch"></div>
-        <div class="frame media-secondary" data-img="images/house-prelim-2.jpg"><img loading="lazy" src="images/house-prelim-2.jpg" alt="Dockside house, early concept"></div>
-      </div>
     </div>
     <div class="piece-text">
       <h2>Dockside House</h2>
       <p>Built and lit in Blender — warm window light against a cool dusk exterior, weathered wood and dock clutter for wear.</p>
       <div class="piece-meta"><span>Blender</span><span>Environment</span></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/house-prelim-1.jpg"><img loading="lazy" src="images/house-prelim-1.jpg" alt="Dockside house, preliminary sketch"></div>
+        <div class="frame media-secondary" data-img="images/house-prelim-2.jpg"><img loading="lazy" src="images/house-prelim-2.jpg" alt="Dockside house, early concept"></div>
+      </div>
     </div>
   </div>
 
   <div class="piece">
     <div class="piece-media-group">
       <div class="frame media-primary" data-img="images/Ignacio_apt_3d.jpg"><img loading="lazy" src="images/Ignacio_apt_3d.jpg" alt="Ignacio's apartment, 3D"></div>
-      <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/kitchen_ignacio_drawing.png"><img loading="lazy" src="images/kitchen_ignacio_drawing.png" alt="Kitchen concept drawing"></div>
-        <div class="frame media-secondary" data-img="images/hotel_lobby.png"><img loading="lazy" src="images/hotel_lobby.png" alt="Hotel lobby"></div>
-      </div>
     </div>
     <div class="piece-text">
       <h2>Ignacio's Apartment</h2>
       <p>Concept drawing carried into a full 3D build — kitchen line art alongside the finished Blender render of the same space.</p>
       <div class="piece-meta"><span>Blender</span><span>Concept → 3D</span></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/kitchen_ignacio_drawing.png"><img loading="lazy" src="images/kitchen_ignacio_drawing.png" alt="Kitchen concept drawing"></div>
+        <div class="frame media-secondary" data-img="images/hotel_lobby.png"><img loading="lazy" src="images/hotel_lobby.png" alt="Hotel lobby"></div>
+      </div>
     </div>
   </div>
 
   <div class="piece reverse">
     <div class="piece-media-group">
       <div class="frame media-primary" data-img="images/diary_elisa_mm.jpg"><img loading="lazy" src="images/diary_elisa_mm.jpg" alt="Elisa's diary"></div>
-      <div class="secondary-row">
-        <div class="frame media-secondary" data-img="images/diary_initialsketches.jpg"><img loading="lazy" src="images/diary_initialsketches.jpg" alt="Diary, initial sketches"></div>
-        <div class="frame media-secondary" data-img="images/elisasdiary_sketches_02.jpg"><img loading="lazy" src="images/elisasdiary_sketches_02.jpg" alt="Diary, sketch refinement"></div>
-      </div>
     </div>
     <div class="piece-text">
       <h2>Elisa's Diary</h2>
       <p>A key story prop, from first thumbnail passes through to the finished piece — binding, ribbon, and seal all went through several rounds before landing.</p>
       <div class="piece-meta"><span>Prop design</span><span>Painted</span></div>
+      <div class="secondary-row">
+        <div class="frame media-secondary" data-img="images/diary_initialsketches.jpg"><img loading="lazy" src="images/diary_initialsketches.jpg" alt="Diary, initial sketches"></div>
+        <div class="frame media-secondary" data-img="images/elisasdiary_sketches_02.jpg"><img loading="lazy" src="images/elisasdiary_sketches_02.jpg" alt="Diary, sketch refinement"></div>
+      </div>
     </div>
   </div>
 
