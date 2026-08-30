@@ -146,6 +146,7 @@
   }
   .lb-close:hover{ transform: rotate(90deg); }
   .ab-pulse{ position:relative; display:inline-block; }
+	.lb-close.ab-pulse{ position: absolute; }
   .ab-pulse::before, .ab-pulse::after{ content:attr(data-text); position:absolute; inset:0; display:flex; align-items:center; justify-content:center; mix-blend-mode:screen; pointer-events:none; }
   .ab-pulse::before{ color:#ff3b5c; animation: ab-a 2.6s ease-in-out infinite; }
   .ab-pulse::after{ color:#3bd6ff; animation: ab-b 2.6s ease-in-out infinite; }
