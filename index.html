@@ -21,7 +21,7 @@
   ::selection{ background: var(--spectral); color: var(--ink); }
   a{ color: var(--fog); text-decoration: none; border-bottom: 1px solid var(--fog-dim); }
   a:hover{ color: var(--spectral); border-color: var(--spectral); }
-  .wrap{ max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+  .wrap{ width: 88%; max-width: 1400px; margin: 0 auto; padding: 0 clamp(20px, 3vw, 56px); }
 
   /* ---------- NAV ---------- */
   nav{ position: sticky; top:0; z-index: 10; background: rgba(12,13,15,0.85); backdrop-filter: blur(8px); }
@@ -106,8 +106,8 @@
   /* ---------- GRID SECTION (props / character work) ---------- */
   .grid-section{ padding: 72px 0; }
   .grid-section .section-label{ font-size: 0.85rem; color: var(--fog-dim); margin-bottom: 28px; }
-  .grid{ display:grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-  .grid .frame{ aspect-ratio: 1/1; }
+  .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .grid .frame{ aspect-ratio: 1/1.5; }
 
   /* ---------- FOOTER ---------- */
   footer{ padding: 72px 0 100px; border-top: 1px solid var(--rule); }
@@ -254,8 +254,8 @@
 <footer id="contact">
   <div class="wrap">
     <h2>Contact</h2>
-    <p>A short paragraph about who you are and what you make.</p>
-    <p><a href="mailto:you@example.com">you@example.com</a></p>
+    <p>Social Media &amp; Contact links below!</p>
+    <p><a href="beacons.ai/nadaroule">beacons.ai/nadaroule</a></p>
   </div>
 </footer>
 
@@ -278,12 +278,16 @@
     const frameEls = Array.from(document.querySelectorAll('.frame[data-img]'))
       .filter(f => f.getAttribute('data-img').trim() !== '');
 
-    const slides = frameEls.map(frame => {
-      const caption = frame.closest('.piece')
-        ? frame.closest('.piece').querySelector('h2')?.textContent
-        : (frame.querySelector('img,video')?.alt || '');
-      return { src: frame.getAttribute('data-img').trim(), caption: caption || '', frame };
-    });
+	  let slides = [];
+	  frameEls.forEach(frame => {
+  		const paths = frame.getAttribute('data-img').split(',').map(s => s.trim()).filter(Boolean);
+  		const caption = frame.closest('.piece')
+    		? frame.closest('.piece').querySelector('h2')?.textContent
+    		: (frame.querySelector('img,video')?.alt || '');
+  		paths.forEach((src, i) => {
+			   slides.push({ src, caption: caption || '', frame, indexInSet: i, setSize: paths.length });
+		});
+	});
 
     const overlay = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
@@ -304,12 +308,20 @@
         lbVideo.style.display='none'; lbImg.style.display='block';
         lbImg.src = slide.src;
       }
-      lbCaption.textContent = slide.caption;
+      lbCaption.textContent = slide.setSize > 1
+  		? `${slide.caption} — ${slide.indexInSet + 1}/${slide.setSize}`
+  		: slide.caption;
       overlay.classList.add('active');
     }
     function close(){ lbVideo.pause(); overlay.classList.remove('active'); }
 
-    frameEls.forEach((frame, i) => frame.addEventListener('click', () => open(i)));
+  frameEls.forEach((frame) => {
+  frame.addEventListener('click', () => {
+    const firstIndex = slides.findIndex(s => s.frame === frame);
+    if (firstIndex !== -1) open(firstIndex);
+  });
+});
+
     document.getElementById('lbClose').addEventListener('click', close);
     document.getElementById('lbPrev').addEventListener('click', () => open(current-1));
     document.getElementById('lbNext').addEventListener('click', () => open(current+1));
