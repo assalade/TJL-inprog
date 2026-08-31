@@ -26,7 +26,7 @@
   /* ---------- NAV ---------- */
   nav{ position: sticky; top:0; z-index: 10; background: rgba(12,13,15,0.85); backdrop-filter: blur(8px); }
   nav .wrap{ display:flex; justify-content:space-between; align-items:center; height: 68px; }
-  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1.2rem; }
+  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1.2rem; border-bottom: none; }
   .nav-links{ display:flex; gap:28px; font-size:0.88rem; }
   .nav-links a{ color: var(--fog-dim); border-bottom: none; }
   .nav-links a:hover{ color: var(--fog); }
@@ -182,11 +182,11 @@
 
 <nav>
   <div class="wrap">
-    <div class="nav-name aberrate" data-text="Tj Tj Tj Tj Tj :)">TJ Laplanche</div>
+    <a class="nav-name aberrate" data-text="Tj Tj Tj Tj Tj :)" href="#top">TJ Laplanche</a>
     <div class="nav-links">
-      <div class="nav-name aberrate" data-text="Environments">Environments</div>
-      <div class="nav-name aberrate" data-text="More Work">More Work</div>
-      <div class="nav-name aberrate" data-text="Contact">Contact</div>
+      <a class="aberrate" data-text="Environments" href="#environments">Environments</a>
+      <a class="aberrate" data-text="More Work" href="#more">More Work</a>
+      <a class="aberrate" data-text="Contact" href="#contact">Contact</a>
     </div>
   </div>
 </nav>
