@@ -26,7 +26,7 @@
   /* ---------- NAV ---------- */
   nav{ position: sticky; top:0; z-index: 10; background: rgba(12,13,15,0.85); backdrop-filter: blur(8px); }
   nav .wrap{ display:flex; justify-content:space-between; align-items:center; height: 68px; }
-  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1rem; }
+  .nav-name{ font-family:'Space Grotesk', sans-serif; font-weight:500; font-size:1.2rem; }
   .nav-links{ display:flex; gap:28px; font-size:0.88rem; }
   .nav-links a{ color: var(--fog-dim); border-bottom: none; }
   .nav-links a:hover{ color: var(--fog); }
@@ -36,9 +36,22 @@
   h1.title{
     font-family:'Space Grotesk', sans-serif; font-weight: 500;
     font-size: clamp(2.2rem, 4.8vw, 3.4rem); line-height: 1.12; letter-spacing: -0.01em;
-    max-width: 17ch; margin-bottom: 18px;
+    max-width: 17ch; margin-bottom: 2px;
   }
   .hero-sub{ max-width: 50ch; color: var(--fog-dim); font-size: 1.02rem; }
+	
+.hero-tagline{
+  font-family: 'Space Grotesk', sans-serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--spectral);
+  margin-bottom: 10px;
+  display: block;
+}
+	.hero-tagline.aberrate{
+  display: block;
+}
 
   .aberrate{ position: relative; display: inline-block; }
   .aberrate::before, .aberrate::after{
@@ -169,11 +182,11 @@
 
 <nav>
   <div class="wrap">
-    <div class="nav-name">Your Name</div>
+    <div class="nav-name aberrate" data-text="Tj Tj Tj Tj Tj :)">TJ Laplanche</div>
     <div class="nav-links">
-      <a href="#environments">Environments</a>
-      <a href="#more">More Work</a>
-      <a href="#contact">Contact</a>
+      <div class="nav-name aberrate" data-text="Environments">Environments</div>
+      <div class="nav-name aberrate" data-text="More Work">More Work</div>
+      <div class="nav-name aberrate" data-text="Contact">Contact</div>
     </div>
   </div>
 </nav>
@@ -183,7 +196,8 @@
     <img src="images/STUDY PLAIN ABRIL.jpg" alt="Hero environment">
     <div class="hero-overlay"></div>
     <div class="hero-text wrap">
-      <h1 class="title aberrate" data-text="Viz Dev ✦ Comics ✦ Games">Viz Dev ✦ Comics ✦ Games</h1>
+      <h1 class="title aberrate" data-text="TJ Laplanche">TJ Laplanche</h1>
+<p class="hero-tagline aberrate" data-text="Viz Dev ✦ Comics ✦ Games">Viz Dev ✦ Comics ✦ Games</p>
       <p class="hero-sub">
         Environments, objects, and buildings, held together by where the light is allowed
         to fall and where it isn't. Painted, then some of it built out in three dimensions.
